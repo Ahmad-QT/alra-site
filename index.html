@@ -1,0 +1,1030 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Alra Intelligence — a services-as-software firm. Senior engineers ship production AI in weeks at fixed written quotes, run it as managed systems, and report the return in CFO language.">
+<meta property="og:title" content="Alra Intelligence — Services-as-Software for the AI Era">
+<meta property="og:type" content="website">
+<title>Alra Intelligence — Services-as-Software for the AI Era</title>
+<style>
+  /* ── Tokens: dark-first flagship, light theme fully supported ── */
+  :root {
+    --paper: #0A0F1E;
+    --ink: #EDF1EC;
+    --ink-soft: #C3CBC9;
+    --muted: #8B95A3;
+    --hairline: #1E2838;
+    --accent: #10B981;
+    --accent-strong: #34D39A;
+    --accent-ink: #04231A;
+    --accent-dim: rgba(16,185,129,.12);
+    --neg: #E5707A;
+    --card: #0E1524;
+    --card-raise: #111A2C;
+    --code-bg: #0D1626;
+    --shadow: 0 1px 2px rgba(0,0,0,.5), 0 18px 44px -22px rgba(0,0,0,.65);
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --paper: #F5F7F4; --ink: #0A0F1E; --ink-soft: #2A3242; --muted: #5A6472;
+      --hairline: #D9DFDA; --accent: #0B8A5F; --accent-strong: #096B4A; --accent-ink: #FFFFFF;
+      --accent-dim: rgba(11,138,95,.10); --neg: #B4232E;
+      --card: #FDFEFD; --card-raise: #FFFFFF; --code-bg: #EDF1EE;
+      --shadow: 0 1px 2px rgba(10,15,30,.05), 0 12px 32px -16px rgba(10,15,30,.16);
+    }
+  }
+  :root[data-theme="light"] {
+    --paper: #F5F7F4; --ink: #0A0F1E; --ink-soft: #2A3242; --muted: #5A6472;
+    --hairline: #D9DFDA; --accent: #0B8A5F; --accent-strong: #096B4A; --accent-ink: #FFFFFF;
+    --accent-dim: rgba(11,138,95,.10); --neg: #B4232E;
+    --card: #FDFEFD; --card-raise: #FFFFFF; --code-bg: #EDF1EE;
+    --shadow: 0 1px 2px rgba(10,15,30,.05), 0 12px 32px -16px rgba(10,15,30,.16);
+  }
+  :root[data-theme="dark"] {
+    --paper: #0A0F1E; --ink: #EDF1EC; --ink-soft: #C3CBC9; --muted: #8B95A3;
+    --hairline: #1E2838; --accent: #10B981; --accent-strong: #34D39A; --accent-ink: #04231A;
+    --accent-dim: rgba(16,185,129,.12); --neg: #E5707A;
+    --card: #0E1524; --card-raise: #111A2C; --code-bg: #0D1626;
+    --shadow: 0 1px 2px rgba(0,0,0,.5), 0 18px 44px -22px rgba(0,0,0,.65);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 17px; line-height: 1.65; -webkit-font-smoothing: antialiased;
+  }
+  .serif { font-family: "Palatino Linotype", Palatino, "Iowan Old Style", "Book Antiqua", Georgia, serif; }
+  .mono  { font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace; }
+
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 28px; }
+
+  /* ── Nav ── */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    background: color-mix(in srgb, var(--paper) 86%, transparent);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--hairline);
+  }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 15px 0; gap: 24px; }
+  .wordmark {
+    font-family: "Palatino Linotype", Palatino, Georgia, serif;
+    font-size: 19px; font-weight: 700; letter-spacing: .02em; color: var(--ink);
+  }
+  .wordmark:hover { text-decoration: none; }
+  .wordmark .dot { color: var(--accent); }
+  .nav-links { display: flex; align-items: center; gap: 24px; }
+  .nav-links a { color: var(--muted); font-size: 13.5px; letter-spacing: .01em; }
+  .nav-links a:hover { color: var(--ink); text-decoration: none; }
+  @media (max-width: 860px) { .nav-links .hide-m { display: none; } }
+
+  .btn {
+    display: inline-block; background: var(--accent); color: var(--accent-ink) !important;
+    font-weight: 650; font-size: 15px; padding: 13px 24px; border-radius: 5px;
+    border: 1px solid var(--accent); transition: transform .12s ease, background .12s ease;
+  }
+  .btn:hover { background: var(--accent-strong); border-color: var(--accent-strong); text-decoration: none; transform: translateY(-1px); }
+  .btn-ghost { background: transparent; color: var(--ink) !important; border: 1px solid var(--hairline); }
+  .btn-ghost:hover { background: var(--code-bg); border-color: var(--muted); }
+  .btn-sm { padding: 8px 16px; font-size: 13px; }
+
+  /* ── Hero ── */
+  .hero { padding: 104px 0 64px; border-bottom: 1px solid var(--hairline); position: relative; overflow: hidden; }
+  .hero::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(1100px 500px at 85% -10%, var(--accent-dim), transparent 60%);
+  }
+  .hero .wrap { position: relative; }
+  .eyebrow {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 12px; letter-spacing: .2em; text-transform: uppercase;
+    color: var(--accent); margin: 0 0 28px;
+  }
+  .hero h1 {
+    font-family: "Palatino Linotype", Palatino, "Iowan Old Style", Georgia, serif;
+    font-size: clamp(42px, 6.4vw, 74px); line-height: 1.04; letter-spacing: -0.018em;
+    font-weight: 700; margin: 0 0 28px; max-width: 15ch; text-wrap: balance;
+  }
+  .hero h1 em { font-style: italic; color: var(--accent); }
+  .hero .lede { font-size: 19.5px; color: var(--ink-soft); max-width: 64ch; margin: 0 0 38px; }
+  .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+
+  .hero-grid { display: grid; grid-template-columns: minmax(0,1fr) 300px; gap: 60px; align-items: center; }
+  @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; } .hero-chart { display: none; } }
+  .hero-chart svg { width: 100%; height: auto; display: block; }
+  .chart-caption {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--muted); margin-top: 10px; text-align: right;
+  }
+
+  .commit {
+    display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 64px;
+    border: 1px solid var(--hairline); border-radius: 8px; overflow: hidden; background: var(--card);
+  }
+  @media (max-width: 860px) { .commit { grid-template-columns: repeat(2, 1fr); } }
+  .commit-item { padding: 22px 22px; border-left: 1px solid var(--hairline); }
+  .commit-item:first-child { border-left: none; }
+  @media (max-width: 860px) {
+    .commit-item:nth-child(3) { border-left: none; }
+    .commit-item:nth-child(n+3) { border-top: 1px solid var(--hairline); }
+  }
+  .commit-item .c-t { font-weight: 650; font-size: 15px; }
+  .commit-item .c-d { font-size: 12.5px; color: var(--muted); margin-top: 3px; line-height: 1.5; }
+
+  /* ── Sections ── */
+  section.block { padding: 92px 0; border-bottom: 1px solid var(--hairline); }
+  .sec-label {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 12px; letter-spacing: .2em; text-transform: uppercase;
+    color: var(--muted); margin: 0 0 14px;
+  }
+  .sec-label b { color: var(--accent); font-weight: 600; }
+  h2 {
+    font-family: "Palatino Linotype", Palatino, "Iowan Old Style", Georgia, serif;
+    font-size: clamp(30px, 4.2vw, 44px); line-height: 1.12; letter-spacing: -0.012em;
+    font-weight: 700; margin: 0 0 18px; max-width: 26ch; text-wrap: balance;
+  }
+  .section-lede { color: var(--ink-soft); max-width: 64ch; font-size: 17.5px; margin: 0 0 46px; }
+  .section-lede strong { color: var(--ink); }
+
+  /* stat band */
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 46px; }
+  @media (max-width: 900px) { .stats { grid-template-columns: 1fr; } }
+  .stat {
+    background: var(--card); border: 1px solid var(--hairline); border-radius: 8px;
+    padding: 26px 24px; box-shadow: var(--shadow);
+  }
+  .stat .n {
+    font-family: "Palatino Linotype", Palatino, Georgia, serif;
+    font-size: 44px; font-weight: 700; line-height: 1.05; color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .stat .n.green { color: var(--accent); }
+  .stat .t { font-size: 14.5px; color: var(--ink-soft); margin-top: 8px; line-height: 1.5; }
+  .stat .src {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--muted); margin-top: 12px;
+  }
+
+  /* demand table */
+  .demand { border: 1px solid var(--hairline); border-radius: 10px; overflow: hidden; background: var(--card); box-shadow: var(--shadow); }
+  .demand-head {
+    display: grid; grid-template-columns: minmax(0,1.2fr) minmax(0,1.6fr) auto;
+    gap: 16px; padding: 14px 24px;
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--muted); background: var(--code-bg); border-bottom: 1px solid var(--hairline);
+  }
+  .demand-row {
+    display: grid; grid-template-columns: minmax(0,1.2fr) minmax(0,1.6fr) auto;
+    gap: 16px; align-items: center; padding: 15px 24px; border-bottom: 1px solid var(--hairline);
+  }
+  .demand-row:last-child { border-bottom: none; }
+  .demand-row .name { font-size: 15px; font-weight: 600; }
+  .demand-row .name small { display: block; font-weight: 400; font-size: 12.5px; color: var(--muted); }
+  .bar-track { position: relative; height: 10px; border-radius: 999px; background: var(--code-bg); overflow: hidden; }
+  .bar { position: absolute; top: 0; bottom: 0; left: 0; border-radius: 999px; background: var(--accent); }
+  .bar.neg { background: var(--neg); }
+  .demand-row .val {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 14px; font-weight: 600; color: var(--accent); min-width: 52px; text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  .demand-row .val.neg { color: var(--neg); }
+  .demand-row.ours { background: var(--accent-dim); }
+  .demand-foot {
+    padding: 13px 24px; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 11px; color: var(--muted); border-top: 1px solid var(--hairline);
+  }
+
+  /* offer cards */
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  @media (max-width: 900px) { .cards { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--card); border: 1px solid var(--hairline); border-radius: 10px;
+    padding: 32px 28px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 12px;
+  }
+  .card h3 { font-family: "Palatino Linotype", Palatino, Georgia, serif; font-size: 22px; margin: 0; line-height: 1.25; }
+  .card .kicker {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--accent);
+  }
+  .card p { margin: 0; color: var(--ink-soft); font-size: 15.5px; }
+  .card ul { margin: 4px 0 0; padding-left: 18px; color: var(--muted); font-size: 14.5px; display: grid; gap: 6px; }
+
+  /* pricing */
+  .price-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  @media (max-width: 1000px) { .price-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 620px) { .price-grid { grid-template-columns: 1fr; } }
+  .price {
+    background: var(--card); border: 1px solid var(--hairline); border-radius: 10px;
+    padding: 28px 24px; display: flex; flex-direction: column; gap: 10px; box-shadow: var(--shadow);
+  }
+  .price.apex { border-color: var(--accent); background: var(--card-raise); position: relative; }
+  .price.apex::before {
+    content: "APEX OFFER";
+    position: absolute; top: -11px; left: 20px;
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 10px; letter-spacing: .16em; color: var(--accent-ink);
+    background: var(--accent); border-radius: 999px; padding: 3px 10px; font-weight: 700;
+  }
+  .price .rung {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted);
+  }
+  .price h3 { font-family: "Palatino Linotype", Palatino, Georgia, serif; font-size: 19.5px; margin: 0; line-height: 1.25; }
+  .price .amount {
+    font-family: "Palatino Linotype", Palatino, Georgia, serif;
+    font-size: 32px; font-weight: 700; color: var(--ink); line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+  }
+  .price .amount small { font-size: 14px; color: var(--muted); font-weight: 400; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+  .price .term {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 11.5px; color: var(--accent); letter-spacing: .06em;
+  }
+  .price p { margin: 0; font-size: 13.5px; color: var(--muted); line-height: 1.55; }
+  .price-note { margin-top: 30px; font-size: 14.5px; color: var(--muted); max-width: 72ch; }
+  .price-note strong { color: var(--ink-soft); }
+
+  /* CAIO */
+  .caio-grid { display: grid; grid-template-columns: minmax(0,1.3fr) minmax(0,1fr); gap: 56px; align-items: start; }
+  @media (max-width: 900px) { .caio-grid { grid-template-columns: 1fr; } }
+  .caio-grid p { color: var(--ink-soft); max-width: 60ch; }
+  .caio-grid p strong { color: var(--ink); }
+  .arc {
+    background: var(--card); border: 1px solid var(--hairline); border-radius: 10px;
+    overflow: hidden; box-shadow: var(--shadow);
+  }
+  .arc-head {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
+    color: var(--muted); padding: 14px 22px; border-bottom: 1px solid var(--hairline); background: var(--code-bg);
+  }
+  .arc-row { display: flex; gap: 16px; padding: 15px 22px; border-bottom: 1px solid var(--hairline); align-items: baseline; }
+  .arc-row:last-child { border-bottom: none; }
+  .arc-row .when {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 11.5px; color: var(--accent); flex: none; width: 84px;
+    font-variant-numeric: tabular-nums;
+  }
+  .arc-row .what { font-size: 14px; color: var(--ink-soft); }
+
+  /* method */
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--hairline); }
+  @media (max-width: 900px) { .steps { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .steps { grid-template-columns: 1fr; } }
+  .step { padding: 30px 24px 30px 0; border-bottom: 1px solid var(--hairline); }
+  .step .n {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 12px; color: var(--accent); letter-spacing: .14em;
+  }
+  .step h3 { font-family: "Palatino Linotype", Palatino, Georgia, serif; font-size: 20px; margin: 10px 0 8px; }
+  .step p { margin: 0; font-size: 14.5px; color: var(--muted); }
+
+  /* standards */
+  .standards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid var(--hairline); border-radius: 10px; overflow: hidden; background: var(--card); }
+  @media (max-width: 900px) { .standards { grid-template-columns: 1fr; } }
+  .standard { padding: 28px 26px; border-left: 1px solid var(--hairline); border-top: 1px solid var(--hairline); }
+  .standard:nth-child(-n+3) { border-top: none; }
+  .standard:nth-child(3n+1) { border-left: none; }
+  @media (max-width: 900px) {
+    .standard { border-left: none; border-top: 1px solid var(--hairline); }
+    .standard:first-child { border-top: none; }
+  }
+  .standard .s-t { font-weight: 650; font-size: 15.5px; }
+  .standard .s-d { font-size: 13.5px; color: var(--muted); margin-top: 5px; line-height: 1.55; }
+
+  /* proof */
+  .cards.two { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 900px) { .cards.two { grid-template-columns: 1fr; } }
+  .tagrow { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 2px; }
+  .tag {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 11px; letter-spacing: .08em; color: var(--muted);
+    background: var(--code-bg); border-radius: 3px; padding: 4px 9px;
+  }
+  .firmline { margin-top: 42px; color: var(--ink-soft); max-width: 66ch; font-size: 16px; }
+  .firmline strong { color: var(--ink); }
+  .geo { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 22px; }
+  .chip {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 12px; letter-spacing: .06em; border: 1px solid var(--hairline);
+    border-radius: 999px; padding: 7px 16px; color: var(--ink-soft); background: var(--card);
+  }
+  .chip b { color: var(--accent); font-weight: 600; }
+
+  /* closing */
+  .closing { padding: 104px 0; }
+  .closing .lede { color: var(--ink-soft); max-width: 60ch; margin: 0 0 26px; font-size: 18px; }
+  .audit-list { margin: 0 0 38px; padding: 0; list-style: none; display: grid; gap: 12px; max-width: 64ch; }
+  .audit-list li { display: flex; gap: 12px; align-items: baseline; color: var(--ink-soft); font-size: 16px; }
+  .audit-list .tick {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    color: var(--accent); font-size: 13px; flex: none;
+  }
+
+  footer { border-top: 1px solid var(--hairline); padding: 38px 0 52px; font-size: 13px; color: var(--muted); }
+  .foot-grid { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+  .sources {
+    margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--hairline);
+    font-size: 11.5px; line-height: 1.7; color: var(--muted); max-width: 100ch;
+  }
+  .sources b { color: var(--ink-soft); font-weight: 600; }
+
+  /* Animations are opt-in: content is fully visible unless JS successfully enables html.anim */
+  html.anim .reveal { opacity: 0; transform: translateY(14px); transition: opacity .6s ease, transform .6s ease; }
+  html.anim .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    html.anim .reveal { opacity: 1; transform: none; transition: none; }
+    .draw path { stroke-dashoffset: 0 !important; }
+    .bar { transition: none !important; }
+  }
+
+  /* ── Lead modal ── */
+  .veil { position: fixed; inset: 0; z-index: 100; background: rgba(4,8,16,.62); backdrop-filter: blur(5px);
+    display: flex; align-items: center; justify-content: center; padding: 20px; }
+  .veil[hidden] { display: none; }
+  .modal { background: var(--card); border: 1px solid var(--hairline); border-radius: 12px; box-shadow: var(--shadow);
+    width: min(600px, 100%); max-height: min(88vh, 780px); overflow-y: auto; padding: 30px 30px 26px; position: relative; }
+  .m-close { position: absolute; top: 14px; right: 16px; background: none; border: none; color: var(--muted);
+    font-size: 26px; line-height: 1; cursor: pointer; padding: 4px 8px; border-radius: 6px; }
+  .m-close:hover { color: var(--ink); background: var(--code-bg); }
+  .m-kicker { font-family: ui-monospace, Menlo, monospace; font-size: 11px; letter-spacing: .18em;
+    text-transform: uppercase; color: var(--accent); margin: 0 0 8px; }
+  .modal h3 { font-family: "Palatino Linotype", Palatino, Georgia, serif; font-size: 24px; margin: 0 0 6px; color: var(--ink); }
+  .m-sub { font-size: 14px; color: var(--muted); margin: 0 0 22px; }
+  .modal form { display: grid; gap: 14px; }
+  .m-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 560px) { .m-grid { grid-template-columns: 1fr; } }
+  .modal label { display: grid; gap: 6px; font-size: 12.5px; color: var(--muted); font-weight: 600;
+    letter-spacing: .02em; }
+  .modal input, .modal select, .modal textarea { background: var(--code-bg); border: 1px solid var(--hairline);
+    border-radius: 7px; padding: 11px 13px; color: var(--ink); font: inherit; font-size: 14.5px; width: 100%; }
+  .modal input:focus, .modal select:focus, .modal textarea:focus { outline: none; border-color: var(--accent); }
+  .modal textarea { resize: vertical; min-height: 74px; }
+  .m-error { color: var(--neg); font-size: 13px; margin: 0; }
+  .m-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 4px; }
+  .m-note { font-size: 12px; color: var(--muted); margin: 4px 0 0; }
+  .m-done[hidden] { display: none; }
+  .m-done h3 { margin-bottom: 8px; }
+  .m-done p { font-size: 14.5px; color: var(--ink-soft); margin: 0 0 14px; }
+  .m-brief { width: 100%; min-height: 150px; background: var(--code-bg); border: 1px solid var(--hairline);
+    border-radius: 7px; padding: 12px 14px; color: var(--ink); font-family: ui-monospace, Menlo, monospace;
+    font-size: 12.5px; line-height: 1.6; margin-bottom: 14px; }
+</style>
+
+<nav class="nav">
+  <div class="wrap nav-inner">
+    <a class="wordmark" href="#top">Alra<span class="dot">.</span> Intelligence</a>
+    <div class="nav-links">
+      <a href="#market" class="hide-m">The Shift</a>
+      <a href="#services" class="hide-m">Services</a>
+      <a href="#pricing" class="hide-m">Engagements</a>
+      <a href="#caio" class="hide-m">Chief AI Officer</a>
+      <a href="#standard" class="hide-m">Standard</a>
+      <a href="library.html" class="hide-m">Library</a>
+      <a class="btn btn-sm" href="mailto:Ahmad@alrashedi.com?subject=Audit%20Request%20—%20Alra%20Intelligence">Book an audit</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow">Alra Intelligence · Services-as-Software · AI Engineering · AI Leadership</p>
+      <h1>We sell finished work. <em>Not hours.</em></h1>
+      <p class="lede">
+        Alra Intelligence is a services-as-software firm. Senior engineers audit your business
+        the way an investor would, ship production AI in weeks at fixed, written quotes,
+        run it as a managed system — and report the return in your CFO's language.
+        For organizations that want AI leadership, we serve as your fractional Chief AI Officer.
+      </p>
+      <div class="hero-cta">
+        <a class="btn" href="mailto:Ahmad@alrashedi.com?subject=Audit%20Request%20—%20Alra%20Intelligence">Book a readiness audit</a>
+        <a class="btn btn-ghost" href="#pricing">See how we engage</a>
+      </div>
+    </div>
+    <div class="hero-chart" aria-hidden="true">
+      <svg viewBox="0 0 300 250" class="draw" xmlns="http://www.w3.org/2000/svg">
+        <g stroke="var(--hairline)" stroke-width="1">
+          <line x1="0" y1="50"  x2="300" y2="50"/>
+          <line x1="0" y1="100" x2="300" y2="100"/>
+          <line x1="0" y1="150" x2="300" y2="150"/>
+          <line x1="0" y1="200" x2="300" y2="200"/>
+        </g>
+        <path id="valueline" d="M4 224 C 56 218, 80 206, 110 188 S 168 142, 198 112 S 258 42, 294 24"
+              fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round"/>
+        <circle id="valuedot" cx="294" cy="24" r="4.5" fill="var(--accent)"/>
+        <text x="232" y="14" font-size="10" fill="var(--muted)"
+              font-family="ui-monospace, Menlo, monospace" letter-spacing="1">VALUE</text>
+        <text x="4" y="244" font-size="10" fill="var(--muted)"
+              font-family="ui-monospace, Menlo, monospace" letter-spacing="1">TIME →</text>
+      </svg>
+      <p class="chart-caption">Compounding, not cost-cutting</p>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="commit">
+      <div class="commit-item"><div class="c-t">100% senior delivery</div><div class="c-d">The person who diagnoses your business builds the system. No junior handoffs, ever.</div></div>
+      <div class="commit-item"><div class="c-t">Fixed quotes, in writing</div><div class="c-d">Every engagement is quoted fixed before work begins. Never hourly, never a surprise invoice.</div></div>
+      <div class="commit-item"><div class="c-t">Production in weeks</div><div class="c-d">Every engagement is time-boxed and ends with software running in your environment.</div></div>
+      <div class="commit-item"><div class="c-t">EN · AR native</div><div class="c-d">Full delivery in English and Arabic, serving the United States and the GCC.</div></div>
+    </div>
+  </div>
+</header>
+
+<section class="block reveal" id="market">
+  <div class="wrap">
+    <p class="sec-label"><b>01</b> — The shift</p>
+    <h2>The market has already voted. Most firms can't follow it.</h2>
+    <p class="section-lede">
+      These aren't our numbers — they're the industry's own. The traditional model
+      (armies of billable people) is contracting, while demand for finished, software-like
+      services is surging. Legacy firms can't make this move without dismantling
+      themselves. <strong>We were built on the other side of it.</strong>
+    </p>
+    <div class="stats">
+      <div class="stat">
+        <div class="n">15–17%</div>
+        <div class="t">of clients ever move AI pilots to scale — as admitted publicly by the chief strategy officer of the world's largest AI consultancy.</div>
+        <div class="src">Accenture CSO · HFS Summit · May 2026</div>
+      </div>
+      <div class="stat">
+        <div class="n">70%</div>
+        <div class="t">of buyers say they would not trust a consultancy report prepared using AI, after repeated fabricated-citation scandals at major firms.</div>
+        <div class="src">Source Global Research · n=3,887 · Aug 2026</div>
+      </div>
+      <div class="stat">
+        <div class="n">≥40%</div>
+        <div class="t">of agentic AI projects will be canceled by end-2027 — escalating costs, unclear value, inadequate risk controls.</div>
+        <div class="src">Gartner · Jun 2025</div>
+      </div>
+      <div class="stat">
+        <div class="n">42%</div>
+        <div class="t">of companies abandoned most of their AI initiatives in 2025 — up from 17% a year earlier. Top reason: poor economics despite technical success.</div>
+        <div class="src">S&amp;P Global · n=1,000+ · 2025</div>
+      </div>
+      <div class="stat">
+        <div class="n green">2×</div>
+        <div class="t">External specialist-led AI deployments succeed roughly twice as often as internal builds. The answer isn't less help — it's better help.</div>
+        <div class="src">MIT NANDA · underlying data · 2025</div>
+      </div>
+      <div class="stat">
+        <div class="n green">~25%</div>
+        <div class="t">of the world's most conservative consultancy's fees are now outcome-based. Even the incumbents concede: hours are over.</div>
+        <div class="src">McKinsey · reported Nov 2025</div>
+      </div>
+    </div>
+
+    <div class="demand" role="table" aria-label="Net demand by service model">
+      <div class="demand-head"><span>Service model</span><span>Net demand, Global 2000 buyers</span><span>Net</span></div>
+      <div class="demand-row">
+        <div class="name">Staff augmentation<small>the legacy model — bodies by the hour</small></div>
+        <div class="bar-track"><div class="bar neg" style="width:47.3%"></div></div>
+        <div class="val neg">−35%</div>
+      </div>
+      <div class="demand-row ours">
+        <div class="name">Technology-enabled services<small>Alra: managed AI systems</small></div>
+        <div class="bar-track"><div class="bar" style="width:24.3%"></div></div>
+        <div class="val">+18%</div>
+      </div>
+      <div class="demand-row ours">
+        <div class="name">AI-led agentic services<small>Alra: agentic engineering sprints</small></div>
+        <div class="bar-track"><div class="bar" style="width:66.2%"></div></div>
+        <div class="val">+49%</div>
+      </div>
+      <div class="demand-row ours">
+        <div class="name">Platform-led services<small>Alra: reusable delivery platform &amp; eval harnesses</small></div>
+        <div class="bar-track"><div class="bar" style="width:68.9%"></div></div>
+        <div class="val">+51%</div>
+      </div>
+      <div class="demand-row ours">
+        <div class="name">Services-as-software<small>Alra: our core model — finished work at fixed prices</small></div>
+        <div class="bar-track"><div class="bar" style="width:100%"></div></div>
+        <div class="val">+74%</div>
+      </div>
+      <div class="demand-foot">HFS Research · survey of 608 Global 2000 IT &amp; business leaders · May 2026 · net = planned increase minus decrease. Highlighted rows are where Alra operates — and the only place we operate.</div>
+    </div>
+  </div>
+</section>
+
+<section class="block reveal" id="services">
+  <div class="wrap">
+    <p class="sec-label"><b>02</b> — What we do</p>
+    <h2>Three ways we deliver. One model behind all of them.</h2>
+    <p class="section-lede">
+      Everything we sell is scoped in writing, priced on the work — never the hours —
+      and delivered by the senior engineers who scoped it.
+    </p>
+    <div class="cards">
+      <div class="card">
+        <span class="kicker">Agentic engineering</span>
+        <h3>AI Systems, Built to Production</h3>
+        <p>Agentic pipelines, document and data automation, AI systems wired into the
+        tools you already run — shipped live in your environment, not as a demo.</p>
+        <ul>
+          <li>Fixed-price, time-boxed sprints</li>
+          <li>Human approval wherever judgment matters</li>
+          <li>Deep integration into your systems of record</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="kicker">Platform-led operations</span>
+        <h3>Managed AI Systems</h3>
+        <p>Your systems run as a managed service on a hardened delivery platform —
+        monitored, evaluated, and improved continuously. You get outcomes, not a
+        codebase to babysit.</p>
+        <ul>
+          <li>A living evaluation suite defines "working"</li>
+          <li>Fixed monthly fee + capped run-cost envelope</li>
+          <li>Monthly reporting in financial language</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="kicker">AI leadership</span>
+        <h3>Digital &amp; AI Transformation</h3>
+        <p>Strategy, governance, and vendor truth-testing for executive teams — what to
+        build, what to buy, what to ignore, and what each choice does to your P&amp;L.</p>
+        <ul>
+          <li>AI roadmap ranked by financial impact</li>
+          <li>Governance &amp; risk frameworks that pass audit</li>
+          <li>Fractional Chief AI Officer at the top</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block reveal" id="pricing">
+  <div class="wrap">
+    <p class="sec-label"><b>03</b> — How we engage</p>
+    <h2>Four rungs. Fixed quotes. No surprises.</h2>
+    <p class="section-lede">
+      Buyers' top two complaints about AI vendors are unpredictable costs and unclear
+      total cost of ownership. So every rung is time-boxed and quoted fixed, in writing,
+      before work begins — you approve the exact number before anything starts.
+    </p>
+    <div class="price-grid">
+      <div class="price">
+        <span class="rung">Rung 1 · Entry</span>
+        <h3>AI Readiness &amp; Governance Audit</h3>
+        <div class="amount">Fixed fee <small>· quoted in writing</small></div>
+        <span class="term">2 weeks · credited against Rung 2</span>
+        <p>A senior-only diagnostic through a financial lens: where AI moves real money in
+        your business, ranked by impact — ending in a written <b>ready / not-ready verdict</b>.</p>
+        <a class="btn btn-sm" href="mailto:Ahmad@alrashedi.com?subject=Book%20a%20call%20—%20Readiness%20Audit">Book a call</a>
+      </div>
+      <div class="price">
+        <span class="rung">Rung 2 · Build</span>
+        <h3>Production Sprint</h3>
+        <div class="amount">Fixed quote <small>· per scope</small></div>
+        <span class="term">6 weeks · live in your environment</span>
+        <p>One scoped system taken from signed statement of work to running in production.
+        We never sell proofs-of-concept — the deliverable works, or the phase gate stops it.</p>
+        <a class="btn btn-sm" href="mailto:Ahmad@alrashedi.com?subject=Quote%20request%20—%20Production%20Sprint">Get a quote</a>
+      </div>
+      <div class="price">
+        <span class="rung">Rung 3 · Run</span>
+        <h3>Managed AI Systems</h3>
+        <div class="amount">Monthly retainer <small>· quoted in writing</small></div>
+        <span class="term">monthly · capped run-costs</span>
+        <p>Your systems operated, monitored, and improved — with a maintained evaluation
+        suite and <b>capped monthly run-costs, defined in your SOW</b>. The industry won't
+        cap your AI bill. We do.</p>
+        <a class="btn btn-sm" href="mailto:Ahmad@alrashedi.com?subject=Quote%20request%20—%20Managed%20AI%20Systems">Get a quote</a>
+      </div>
+      <div class="price apex">
+        <span class="rung">Rung 4 · Lead</span>
+        <h3>Fractional Chief AI Officer</h3>
+        <div class="amount">Scoped <small>· fixed retainer</small></div>
+        <span class="term">~1 day/week · board-level · priced before signature</span>
+        <p>Senior AI leadership embedded in your executive team — strategy, governance,
+        vendor selection, and quarterly board reporting. A fixed monthly retainer scoped
+        to your mandate — never hourly. Includes every rung below it.</p>
+        <a class="btn btn-sm" href="mailto:Ahmad@alrashedi.com?subject=Book%20a%20call%20—%20Fractional%20CAIO">Book a call</a>
+      </div>
+    </div>
+    <p class="price-note">
+      <strong>Why fixed quotes when the industry bills hours?</strong> Because hourly billing
+      rewards inefficiency — the opposite of what you're buying. Every Alra engagement is
+      quoted as a single fixed number, in writing, before signature; if we're inefficient,
+      we absorb it, not you. We can afford that because senior people build reusable systems
+      instead of billing time. <strong>Enterprise and GCC engagements are scoped
+      separately</strong> — always fixed, never hourly.
+    </p>
+  </div>
+</section>
+
+<section class="block reveal" id="caio">
+  <div class="wrap">
+    <p class="sec-label"><b>04</b> — Fractional Chief AI Officer</p>
+    <h2>76% of companies now have a Chief AI Officer. Yours shouldn't cost $500K.</h2>
+    <div class="caio-grid">
+      <div>
+        <p>
+          The CAIO went from rare to standard in one year — 26% of organizations in 2025 to
+          <strong>76% in 2026</strong> (IBM CEO Study, n=2,000). But a full-time hire runs
+          $420K–$680K in cash before equity, and most organizations under $500M in revenue
+          can't justify one. That's the gap we fill: <strong>the same seniority, one day a
+          week, at a fraction of the cost.</strong>
+        </p>
+        <p>
+          What makes ours different is that your AI officer is also the engineer. Advisory-only
+          CAIOs produce slideware; ours has shipped the systems — so the roadmap you get is
+          one the person writing it can actually build.
+        </p>
+        <p>
+          <strong>Two rules, in writing:</strong> we are platform-neutral — no undisclosed
+          vendor ties, ever — and every recommendation comes with the financial case that
+          justifies it, in the format your board expects.
+        </p>
+      </div>
+      <div class="arc" aria-label="The 90-day arc">
+        <div class="arc-head">The first 90 days</div>
+        <div class="arc-row"><span class="when">Weeks 1–2</span><span class="what">AI maturity assessment, shadow-AI audit, governance gap analysis</span></div>
+        <div class="arc-row"><span class="when">Weeks 3–6</span><span class="what">Prioritized roadmap ranked by financial impact + governance framework</span></div>
+        <div class="arc-row"><span class="when">Days 1–90</span><span class="what">Two to three use cases moved toward production, with evaluation systems</span></div>
+        <div class="arc-row"><span class="when">Ongoing</span><span class="what">Weekly advisory, monthly strategy sessions, quarterly board reporting</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block reveal" id="method">
+  <div class="wrap">
+    <p class="sec-label"><b>05</b> — The method</p>
+    <h2>Audit like an investor. Build like an engineer. Run like an operator. Report like a CFO.</h2>
+    <div class="steps">
+      <div class="step">
+        <span class="n">01 · AUDIT</span>
+        <h3>Find the money</h3>
+        <p>A diagnostic through a valuation lens: where AI actually moves revenue, margin,
+        or risk — ranked by financial impact, not novelty.</p>
+      </div>
+      <div class="step">
+        <span class="n">02 · BUILD</span>
+        <h3>Ship the system</h3>
+        <p>Fixed scope, signed before we build. Production engineering standards.
+        Live in weeks, gated on your real data and a named owner.</p>
+      </div>
+      <div class="step">
+        <span class="n">03 · RUN</span>
+        <h3>Operate &amp; evaluate</h3>
+        <p>Managed operation with a living evaluation suite — the codified definition of
+        "working" that outlives any single engagement.</p>
+      </div>
+      <div class="step">
+        <span class="n">04 · PROVE</span>
+        <h3>Report the return</h3>
+        <p>Monthly reporting in financial language: pipeline created, cost removed,
+        capacity gained. Numbers your CFO can take to the board.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block reveal" id="standard">
+  <div class="wrap">
+    <p class="sec-label"><b>06</b> — The Alra Standard</p>
+    <h2>In an industry caught fabricating, rigor is the product.</h2>
+    <p class="section-lede">
+      Major firms have been caught publishing AI-fabricated citations while selling AI
+      governance. We compete on the opposite: <strong>numbers that survive checking.</strong>
+      Six commitments, non-negotiable.
+    </p>
+    <div class="standards">
+      <div class="standard"><div class="s-t">Every number is sourced</div><div class="s-d">Every statistic we publish — including the ones on this page — traces to a named primary source you can verify.</div></div>
+      <div class="standard"><div class="s-t">We publish negative results</div><div class="s-d">When our evaluations say something didn't work, we say so — <a href="library.html#note-2">read one in our library</a>. Anyone can publish wins; measurement discipline is publishing the losses.</div></div>
+      <div class="standard"><div class="s-t">Platform-neutral, in writing</div><div class="s-d">No undisclosed vendor ties, no kickbacks, no preferred-platform pitches. Our only incentive is that your system works.</div></div>
+      <div class="standard"><div class="s-t">A named human signs every output</div><div class="s-d">AI drafts; accountable people approve. Judgment is never automated away — in your systems or in our own work.</div></div>
+      <div class="standard"><div class="s-t">Signed scope before we build</div><div class="s-d">Every engagement starts with a written statement of work and a fixed price. No surprises, no scope drift, no invoice creep.</div></div>
+      <div class="standard"><div class="s-t">We'll tell you to stop</div><div class="s-d">We have no bench to feed. If the audit says AI doesn't clear the bar in your business, the verdict says so — and costs you nothing more.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="block reveal" id="work">
+  <div class="wrap">
+    <p class="sec-label"><b>07</b> — Proof of work</p>
+    <h2>Judge us the way an investor would.</h2>
+    <p class="section-lede">
+      No stock testimonials, no borrowed logos. What follows is what has actually been
+      engineered, tested, and shipped by this firm and its principal.
+    </p>
+    <div class="cards two">
+      <div class="card">
+        <span class="kicker">Financial intelligence · patent-pending</span>
+        <h3>Institutional-grade financial platform</h3>
+        <p>A financial-intelligence platform engineered to institutional valuation standards,
+        with over a thousand automated tests and a provisional patent on file.</p>
+        <div class="tagrow"><span class="tag">1,016 tests</span><span class="tag">USPTO provisional</span><span class="tag">valuation-grade</span></div>
+      </div>
+      <div class="card">
+        <span class="kicker">Agentic systems · production</span>
+        <h3>End-to-end lead-intelligence pipeline</h3>
+        <p>Monitors public channels for buying intent, AI-qualifies and drafts responses,
+        routes every action through human approval, and attributes results to booked revenue.</p>
+        <div class="tagrow"><span class="tag">human-in-the-loop</span><span class="tag">full attribution</span><span class="tag">production</span></div>
+      </div>
+      <div class="card">
+        <span class="kicker">Trading systems · compliance-grade</span>
+        <h3>Live algorithmic trading platform</h3>
+        <p>Multi-symbol live execution with compliance-grade audit trails, a real kill-switch,
+        streaming analytics, and 300+ automated tests under continuous integration.</p>
+        <div class="tagrow"><span class="tag">300+ tests</span><span class="tag">CI</span><span class="tag">audit trails</span></div>
+      </div>
+      <div class="card">
+        <span class="kicker">Economic intelligence · Arabic-first</span>
+        <h3>Arabic-first economic intelligence layer</h3>
+        <p>Built on official national data sources, privacy-law-aware, and designed for the
+        Vision 2030 economy — where Arabic-capable AI remains critically scarce.</p>
+        <div class="tagrow"><span class="tag">7,000+ curated datapoints</span><span class="tag">PDPL-aware</span><span class="tag">عربي</span></div>
+      </div>
+    </div>
+    <p class="firmline">
+      Alra Intelligence is principal-led: engagements are scoped and delivered by a
+      <strong>Big-4-trained valuation practitioner who ships production software</strong> —
+      the analysis and the build come from the same hands, in the same language as your
+      balance sheet.
+    </p>
+    <div class="geo">
+      <span class="chip"><b>US</b> — remote-first delivery</span>
+      <span class="chip"><b>GCC</b> — bilingual, market-native</span>
+      <span class="chip"><b>عربي</b> — native Arabic delivery</span>
+    </div>
+  </div>
+</section>
+
+<section class="closing reveal" id="contact">
+  <div class="wrap">
+    <p class="sec-label"><b>08</b> — The next step</p>
+    <h2>Start where every engagement starts: with a verdict.</h2>
+    <p class="lede">
+      The Readiness &amp; Governance Audit is two weeks, a single fixed fee quoted before you
+      sign, and fully credited against your first build. You leave with a document, not a pitch:
+    </p>
+    <ul class="audit-list">
+      <li><span class="tick">01</span><span>A map of your operations showing where AI moves revenue, margin, or risk — ranked by financial impact.</span></li>
+      <li><span class="tick">02</span><span>The two or three builds worth doing first, each with fixed-price scope, timeline, and expected return.</span></li>
+      <li><span class="tick">03</span><span>A governance and risk assessment your auditors and board can actually use.</span></li>
+      <li><span class="tick">04</span><span>An honest, written verdict. If nothing clears the bar, we say so — and the engagement ends there.</span></li>
+    </ul>
+    <div class="hero-cta">
+      <a class="btn" href="mailto:Ahmad@alrashedi.com?subject=Audit%20Request%20—%20Alra%20Intelligence">Book the audit</a>
+      <a class="btn btn-ghost" href="https://linkedin.com/in/ahmadalrashedi" target="_blank" rel="noopener">Connect on LinkedIn</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <span>© 2026 Alra Intelligence LLC. All rights reserved. · <a href="library.html">Field Notes</a></span>
+      <span class="mono" style="font-size:11.5px;letter-spacing:.1em;">SERVICES-AS-SOFTWARE · AI ENGINEERING · FRACTIONAL AI LEADERSHIP · US &amp; GCC</span>
+    </div>
+    <div class="sources">
+      <b>Sources for statistics on this page:</b> HFS Research, survey of 608 Global 2000 IT &amp; business
+      leaders (May 2026) · Accenture Chief Strategy &amp; Services Officer, HFS New York Summit (May 2026) ·
+      Source Global Research, survey of 3,887 companies (Aug 2026) · Gartner press releases (Jul 2024;
+      Jun 2025) · S&amp;P Global Market Intelligence, 1,000+ respondents (2025) · MIT NANDA underlying
+      deployment data (2025) · IBM CEO Study, 2,000 CEOs (May 2026) · McKinsey outcome-based fee share
+      as reported by Business Insider (Nov 2025). We cite what we can verify — and nothing else.
+    </div>
+  </div>
+</footer>
+
+
+<div class="veil" id="lead-veil" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="m-title">
+    <button class="m-close" id="m-close" aria-label="Close dialog">&times;</button>
+    <div id="m-formwrap">
+      <p class="m-kicker" id="m-kicker">Book a call</p>
+      <h3 id="m-title">Tell us where to reach you</h3>
+      <p class="m-sub" id="m-sub">30 minutes, video, anywhere on earth. One business-day response.</p>
+      <form id="lead-form" novalidate>
+        <div class="m-grid">
+          <label>Full name<input name="name" required autocomplete="name" placeholder="Jane Smith"></label>
+          <label>Work email<input name="email" type="email" required autocomplete="email" placeholder="jane@company.com"></label>
+        </div>
+        <div class="m-grid">
+          <label>Company<input name="company" required autocomplete="organization" placeholder="Company, Inc."></label>
+          <label>Your role<input name="role" placeholder="CFO · COO · Founder"></label>
+        </div>
+        <label>Engagement of interest
+          <select name="engagement">
+            <option>AI Readiness &amp; Governance Audit</option>
+            <option>Production Sprint</option>
+            <option>Managed AI Systems</option>
+            <option>Fractional Chief AI Officer</option>
+            <option>Not sure yet — let's talk</option>
+          </select>
+        </label>
+        <label>What are you trying to achieve?<textarea name="context" required placeholder="The problem, the systems involved, and what success looks like — two or three sentences is plenty."></textarea></label>
+        <div class="m-grid">
+          <label>Preferred call window
+            <select name="window">
+              <option>US morning (ET)</option>
+              <option>Gulf afternoon (GST)</option>
+              <option>Either — flexible</option>
+            </select>
+          </label>
+          <label>Timeline
+            <select name="timeline">
+              <option>This month</option>
+              <option>This quarter</option>
+              <option>Exploring</option>
+            </select>
+          </label>
+        </div>
+        <p class="m-error" id="m-error" hidden>Please complete your name, a valid work email, company, and what you're trying to achieve.</p>
+        <div class="m-actions">
+          <button type="submit" class="btn" id="m-submit">Send request</button>
+        </div>
+        <p class="m-note">Your brief goes directly to Ahmad@alrashedi.com. Nothing is stored on this page — the request travels by email, from you to us.</p>
+      </form>
+    </div>
+    <div class="m-done" id="m-done" hidden>
+      <p class="m-kicker">Request prepared</p>
+      <h3>Your brief is ready ✓</h3>
+      <p>We tried to open your email app with everything pre-filled. If it didn't open, the brief below is on your clipboard — paste it into an email to <b>Ahmad@alrashedi.com</b>.</p>
+      <textarea class="m-brief" id="m-brief" readonly aria-label="Your prepared brief"></textarea>
+      <div class="m-actions">
+        <a class="btn" id="m-mailto" href="#">Open email app</a>
+        <button type="button" class="btn btn-ghost" id="m-copy2">Copy again</button>
+        <button type="button" class="btn btn-ghost" id="m-again">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  (function () {
+    // Fail-open design: the page is fully visible and correct with NO JavaScript.
+    // This script only adds progressive animation, and disables itself on any error.
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) return;
+
+    var root = document.documentElement;
+    try {
+      root.classList.add('anim');
+
+      // Hero value-line draw (skipped when the chart is hidden, e.g. narrow screens)
+      var path = document.getElementById('valueline');
+      if (path && path.getBoundingClientRect().width > 0) {
+        try {
+          var len = path.getTotalLength();
+          path.style.strokeDasharray = len;
+          path.style.strokeDashoffset = len;
+          path.getBoundingClientRect();
+          path.style.transition = 'stroke-dashoffset 1.6s cubic-bezier(.4,0,.2,1) .2s';
+          requestAnimationFrame(function () { path.style.strokeDashoffset = '0'; });
+          var dot = document.getElementById('valuedot');
+          if (dot) {
+            dot.style.opacity = '0';
+            dot.style.transition = 'opacity .4s ease 1.7s';
+            requestAnimationFrame(function () { dot.style.opacity = '1'; });
+          }
+        } catch (e) { /* chart stays static */ }
+      }
+
+      // Section reveals; demand bars sweep in on first view (widths are inline in HTML)
+      function sweepBars(el) {
+        el.querySelectorAll('.bar').forEach(function (b) {
+          var target = b.style.width;
+          b.style.transition = 'none';
+          b.style.width = '0%';
+          requestAnimationFrame(function () {
+            b.style.transition = 'width 1s cubic-bezier(.4,0,.2,1) .15s';
+            b.style.width = target;
+          });
+        });
+      }
+      var items = document.querySelectorAll('.reveal');
+      if (!('IntersectionObserver' in window)) {
+        items.forEach(function (el) { el.classList.add('in'); });
+        return;
+      }
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) {
+            e.target.classList.add('in');
+            sweepBars(e.target);
+            io.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.12 });
+      items.forEach(function (el) { io.observe(el); });
+    } catch (err) {
+      root.classList.remove('anim'); // any failure → fully static, fully visible page
+    }
+  })();
+</script>
+
+<script>
+  (function () {
+    // ── Lead capture: progressive enhancement over the mailto fallbacks ──
+    // To upgrade "Book a call" to live slot-picking: paste your Calendly/Cal.com URL below.
+    var BOOKING_URL = "";
+    var EMAIL = "Ahmad@alrashedi.com";
+    var veil = document.getElementById('lead-veil');
+    if (!veil) return;
+    var form = document.getElementById('lead-form');
+    var formwrap = document.getElementById('m-formwrap');
+    var done = document.getElementById('m-done');
+    var errEl = document.getElementById('m-error');
+    var lastFocus = null, currentTopic = "";
+
+    function openModal(mode, topic) {
+      currentTopic = topic || "";
+      document.getElementById('m-kicker').textContent = mode === 'quote' ? 'Get a quote' : 'Book a call';
+      document.getElementById('m-title').textContent = mode === 'quote'
+        ? 'Tell us what to scope' : 'Tell us where to reach you';
+      document.getElementById('m-sub').textContent = mode === 'quote'
+        ? 'A fixed, written quote — usually within two business days of a short scoping call.'
+        : '30 minutes, video, anywhere on earth. One business-day response.';
+      if (topic) {
+        var sel = form.elements.engagement;
+        for (var i = 0; i < sel.options.length; i++) {
+          if (sel.options[i].text.toLowerCase().indexOf(topic.toLowerCase()) !== -1) { sel.selectedIndex = i; break; }
+        }
+      }
+      formwrap.hidden = false; done.hidden = true; errEl.hidden = true;
+      veil.hidden = false;
+      lastFocus = document.activeElement;
+      setTimeout(function () { form.elements.name.focus(); }, 50);
+    }
+    function closeModal() {
+      veil.hidden = true;
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+    veil.addEventListener('click', function (e) { if (e.target === veil) closeModal(); });
+    document.getElementById('m-close').addEventListener('click', closeModal);
+    document.getElementById('m-again').addEventListener('click', closeModal);
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !veil.hidden) closeModal(); });
+
+    // Intercept every contact CTA (mailto links to us); keep mailto as the no-JS fallback
+    document.querySelectorAll('a[href^="mailto:' + EMAIL + '"]').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        var subj = decodeURIComponent((a.getAttribute('href').split('subject=')[1] || ''));
+        var isQuote = /quote/i.test(subj) || /quote/i.test(a.textContent);
+        if (!isQuote && BOOKING_URL) return; // let Calendly handle calls when configured
+        e.preventDefault();
+        var topic = (subj.split('—')[1] || '').trim();
+        openModal(isQuote ? 'quote' : 'call', topic);
+      });
+      if (BOOKING_URL && !/quote/i.test(a.textContent)) {
+        a.setAttribute('href', BOOKING_URL);
+        a.setAttribute('target', '_blank'); a.setAttribute('rel', 'noopener');
+      }
+    });
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var f = form.elements;
+      var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email.value.trim());
+      if (!f.name.value.trim() || !emailOk || !f.company.value.trim() || !f.context.value.trim()) {
+        errEl.hidden = false; return;
+      }
+      errEl.hidden = true;
+      var kind = document.getElementById('m-kicker').textContent;
+      var lines = [
+        kind.toUpperCase() + ' — via alra website',
+        '',
+        'Name:       ' + f.name.value.trim(),
+        'Email:      ' + f.email.value.trim(),
+        'Company:    ' + f.company.value.trim(),
+        'Role:       ' + (f.role.value.trim() || '-'),
+        'Engagement: ' + f.engagement.value,
+        'Window:     ' + f.window.value,
+        'Timeline:   ' + f.timeline.value,
+        '',
+        'Goal:',
+        f.context.value.trim()
+      ];
+      var brief = lines.join('\n');
+      var subject = '[' + kind + '] ' + f.company.value.trim() + ' — ' + f.engagement.value;
+      var mailto = 'mailto:' + EMAIL + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(brief);
+      document.getElementById('m-brief').value = brief;
+      document.getElementById('m-mailto').setAttribute('href', mailto);
+      try { navigator.clipboard.writeText(brief); } catch (err) {}
+      formwrap.hidden = true; done.hidden = false;
+      try { window.location.href = mailto; } catch (err) {}
+    });
+    document.getElementById('m-copy2').addEventListener('click', function () {
+      var t = document.getElementById('m-brief'); t.select();
+      try { navigator.clipboard.writeText(t.value); } catch (err) { document.execCommand('copy'); }
+    });
+  })();
+</script>
+
+</html>
