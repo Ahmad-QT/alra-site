@@ -471,6 +471,7 @@
         </label>
         <label>What are you trying to achieve?<textarea name="context" required placeholder="The problem, the systems involved, and what success looks like — two or three sentences is plenty."></textarea></label>
         <div class="m-grid">
+          <label>Preferred date<input name="date" type="date"></label>
           <label>Preferred call window
             <select name="window">
               <option>US morning (ET)</option>
@@ -490,7 +491,7 @@
         <div class="m-actions">
           <button type="submit" class="btn" id="m-submit">Send request</button>
         </div>
-        <p class="m-note">Your brief goes directly to ahmad@alraintelligence.com. Nothing is stored on this page — the request travels by email, from you to us.</p>
+        <p class="m-note">Your request is delivered directly to our inbox — no account, no third-party booking page. Replies within one business day.</p>
       </form>
     </div>
     <div class="m-done" id="m-done" hidden>
@@ -508,26 +509,29 @@
 </div>
 <script>
   (function () {
-    // ── Lead capture: progressive enhancement over the mailto fallbacks ──
-    // To upgrade "Book a call" to live slot-picking: paste your Calendly/Cal.com URL below.
-    var BOOKING_URL = "";
-    var EMAIL = "ahmad@alraintelligence.com";
+    // ── Native booking & quote system: in-page form → direct email delivery ──
+    var EMAIL = 'ahmad@alraintelligence.com';
+    var ENDPOINT = 'https://formsubmit.co/ajax/' + EMAIL;
     var veil = document.getElementById('lead-veil');
     if (!veil) return;
     var form = document.getElementById('lead-form');
     var formwrap = document.getElementById('m-formwrap');
     var done = document.getElementById('m-done');
     var errEl = document.getElementById('m-error');
-    var lastFocus = null, currentTopic = "";
+    var doneH = done.querySelector('h3'), doneP = done.querySelector('p');
+    var briefEl = document.getElementById('m-brief');
+    var mailtoBtn = document.getElementById('m-mailto');
+    var copyBtn = document.getElementById('m-copy2');
+    var submitBtn = document.getElementById('m-submit');
+    var lastFocus = null;
 
     function openModal(mode, topic) {
-      currentTopic = topic || "";
       document.getElementById('m-kicker').textContent = mode === 'quote' ? 'Get a quote' : 'Book a call';
       document.getElementById('m-title').textContent = mode === 'quote'
-        ? 'Tell us what to scope' : 'Tell us where to reach you';
+        ? 'Tell us what to scope' : 'Request your call time';
       document.getElementById('m-sub').textContent = mode === 'quote'
         ? 'A fixed, written quote — usually within two business days of a short scoping call.'
-        : '30 minutes, video, anywhere on earth. One business-day response.';
+        : 'Pick a date and window. You will receive a confirmed calendar invite within one business day.';
       if (topic) {
         var sel = form.elements.engagement;
         for (var i = 0; i < sel.options.length; i++) {
@@ -535,34 +539,47 @@
         }
       }
       formwrap.hidden = false; done.hidden = true; errEl.hidden = true;
+      submitBtn.disabled = false; submitBtn.textContent = 'Send request';
       veil.hidden = false;
       lastFocus = document.activeElement;
       setTimeout(function () { form.elements.name.focus(); }, 50);
     }
-    function closeModal() {
-      veil.hidden = true;
-      if (lastFocus && lastFocus.focus) lastFocus.focus();
-    }
+    function closeModal() { veil.hidden = true; if (lastFocus && lastFocus.focus) lastFocus.focus(); }
     veil.addEventListener('click', function (e) { if (e.target === veil) closeModal(); });
     document.getElementById('m-close').addEventListener('click', closeModal);
     document.getElementById('m-again').addEventListener('click', closeModal);
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !veil.hidden) closeModal(); });
 
-    // Intercept every contact CTA (mailto links to us); keep mailto as the no-JS fallback
+    // Every contact CTA opens the in-page flow; the mailto href remains only as a no-JS fallback
     document.querySelectorAll('a[href^="mailto:' + EMAIL + '"]').forEach(function (a) {
       a.addEventListener('click', function (e) {
+        e.preventDefault();
         var subj = decodeURIComponent((a.getAttribute('href').split('subject=')[1] || ''));
         var isQuote = /quote/i.test(subj) || /quote/i.test(a.textContent);
-        if (!isQuote && BOOKING_URL) return; // let Calendly handle calls when configured
-        e.preventDefault();
-        var topic = (subj.split('—')[1] || '').trim();
-        openModal(isQuote ? 'quote' : 'call', topic);
+        openModal(isQuote ? 'quote' : 'call', (subj.split('—')[1] || '').trim());
       });
-      if (BOOKING_URL && !/quote/i.test(a.textContent)) {
-        a.setAttribute('href', BOOKING_URL);
-        a.setAttribute('target', '_blank'); a.setAttribute('rel', 'noopener');
-      }
     });
+
+    // date field: min = today
+    if (form.elements.date) {
+      try { form.elements.date.min = new Date().toISOString().slice(0,10); } catch (e) {}
+    }
+
+    function buildBrief(f, kind, tz) {
+      return [
+        kind.toUpperCase() + ' — via alraintelligence.com', '',
+        'Name:       ' + f.name.value.trim(),
+        'Email:      ' + f.email.value.trim(),
+        'Company:    ' + f.company.value.trim(),
+        'Role:       ' + (f.role.value.trim() || '-'),
+        'Engagement: ' + f.engagement.value,
+        'Date:       ' + (f.date && f.date.value ? f.date.value : 'flexible'),
+        'Window:     ' + f.window.value,
+        'Timeline:   ' + f.timeline.value,
+        'Timezone:   ' + tz, '',
+        'Goal:', f.context.value.trim()
+      ].join('\n');
+    }
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
@@ -573,32 +590,46 @@
       }
       errEl.hidden = true;
       var kind = document.getElementById('m-kicker').textContent;
-      var lines = [
-        kind.toUpperCase() + ' — via alra website',
-        '',
-        'Name:       ' + f.name.value.trim(),
-        'Email:      ' + f.email.value.trim(),
-        'Company:    ' + f.company.value.trim(),
-        'Role:       ' + (f.role.value.trim() || '-'),
-        'Engagement: ' + f.engagement.value,
-        'Window:     ' + f.window.value,
-        'Timeline:   ' + f.timeline.value,
-        '',
-        'Goal:',
-        f.context.value.trim()
-      ];
-      var brief = lines.join('\n');
+      var tz = 'unknown';
+      try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || 'unknown'; } catch (err) {}
+      var brief = buildBrief(f, kind, tz);
       var subject = '[' + kind + '] ' + f.company.value.trim() + ' — ' + f.engagement.value;
-      var mailto = 'mailto:' + EMAIL + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(brief);
-      document.getElementById('m-brief').value = brief;
-      document.getElementById('m-mailto').setAttribute('href', mailto);
-      try { navigator.clipboard.writeText(brief); } catch (err) {}
-      formwrap.hidden = true; done.hidden = false;
-      try { window.location.href = mailto; } catch (err) {}
+      submitBtn.disabled = true; submitBtn.textContent = 'Sending…';
+
+      fetch(ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          name: f.name.value.trim(), email: f.email.value.trim(),
+          company: f.company.value.trim(), role: f.role.value.trim() || '-',
+          engagement: f.engagement.value,
+          preferred_date: (f.date && f.date.value) || 'flexible',
+          preferred_window: f.window.value, timeline: f.timeline.value,
+          timezone: tz, goal: f.context.value.trim(),
+          _subject: subject, _template: 'table', _captcha: 'false'
+        })
+      }).then(function (r) { if (!r.ok) throw new Error('relay'); return r.json(); })
+      .then(function () {
+        doneH.textContent = 'Request received ✓';
+        doneP.innerHTML = 'Thank you — your request is in our inbox. You will receive a reply from <b>' + EMAIL + '</b> within one business day, including a confirmed calendar invite if you booked a call.';
+        briefEl.style.display = 'none'; mailtoBtn.style.display = 'none'; copyBtn.style.display = 'none';
+        formwrap.hidden = true; done.hidden = false;
+      })
+      .catch(function () {
+        // Relay unreachable → graceful fallback to the visitor's own email client
+        var mailto = 'mailto:' + EMAIL + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(brief);
+        doneH.textContent = 'One more step';
+        doneP.innerHTML = 'Our relay could not be reached from your network. Your brief is ready below — send it with the button, or paste it into an email to <b>' + EMAIL + '</b>.';
+        briefEl.style.display = ''; briefEl.value = brief;
+        mailtoBtn.style.display = ''; mailtoBtn.setAttribute('href', mailto);
+        copyBtn.style.display = '';
+        try { navigator.clipboard.writeText(brief); } catch (err2) {}
+        formwrap.hidden = true; done.hidden = false;
+      });
     });
-    document.getElementById('m-copy2').addEventListener('click', function () {
-      var t = document.getElementById('m-brief'); t.select();
-      try { navigator.clipboard.writeText(t.value); } catch (err) { document.execCommand('copy'); }
+    copyBtn.addEventListener('click', function () {
+      briefEl.select();
+      try { navigator.clipboard.writeText(briefEl.value); } catch (err) { document.execCommand('copy'); }
     });
   })();
 </script>
