@@ -402,7 +402,6 @@
       <a href="#pricing" class="hide-m">Engagements</a>
       <a href="#caio" class="hide-m">Chief AI Officer</a>
       <a href="#standard" class="hide-m">Standard</a>
-      <a href="library.html" class="hide-m">Library</a>
       <a class="btn btn-sm" href="mailto:ahmad@alraintelligence.com?subject=Audit%20Request%20—%20Alra%20Intelligence">Book an audit</a>
     </div>
   </div>
@@ -475,11 +474,7 @@
         <div class="src"><a href="https://www.resultsense.com/news/2026-08-04-consultancy-clients-distrust-ai-reports/" target="_blank" rel="noopener">Source Global Research · n=3,887 · Aug 2026</a></div>
       </div>
     </div>
-    <p class="section-lede" style="margin-top:-14px">
-      The fuller evidence base — cancellation forecasts, abandonment rates, and the incumbents'
-      own disclosures — is documented with primary sources in <a href="library.html">the Field
-      Notes library</a>.
-    </p>
+    
 
     <div class="demand" role="table" aria-label="Net demand by service model">
       <div class="demand-head"><span>Service model</span><span>Net demand, Global 2000 buyers</span><span>Net</span></div>
@@ -699,7 +694,7 @@
     </p>
     <div class="standards">
       <div class="standard"><div class="s-t">Every number is sourced</div><div class="s-d">Every statistic we publish — including the ones on this page — traces to a named primary source you can verify.</div></div>
-      <div class="standard"><div class="s-t">We publish negative results</div><div class="s-d">When our evaluations say something didn't work, we say so — <a href="library.html#note-2">read one in our library</a>. Anyone can publish wins; measurement discipline is publishing the losses.</div></div>
+      <div class="standard"><div class="s-t">We publish negative results</div><div class="s-d">When our evaluations say something didn't work, we say so. Anyone can publish wins; measurement discipline is publishing the losses.</div></div>
       <div class="standard"><div class="s-t">Platform-neutral, in writing</div><div class="s-d">No undisclosed vendor ties, no kickbacks, no preferred-platform pitches. Our only incentive is that your system works.</div></div>
       <div class="standard"><div class="s-t">A named human signs every output</div><div class="s-d">AI drafts; accountable people approve. Judgment is never automated away — in your systems or in our own work.</div></div>
       <div class="standard"><div class="s-t">Signed scope before we build</div><div class="s-d">Every engagement starts with a written statement of work and a fixed price. No surprises, no scope drift, no invoice creep.</div></div>
@@ -784,7 +779,7 @@
 <footer>
   <div class="wrap">
     <div class="foot-grid">
-      <span>© 2026 Alra Intelligence LLC. All rights reserved. · <a href="library.html">Field Notes</a></span>
+      <span>© 2026 Alra Intelligence LLC. All rights reserved.</span>
       <span class="mono" style="font-size:11.5px;letter-spacing:.1em;">SERVICES-AS-SOFTWARE · AI ENGINEERING · FRACTIONAL AI LEADERSHIP · REMOTE-FIRST</span>
     </div>
     <div class="sources">
@@ -793,7 +788,6 @@
       <a href="https://www.hfsresearch.com/ny-spring-summit-2026/day-1/" target="_blank" rel="noopener">Accenture Chief Strategy &amp; Services Officer, HFS New York Summit (May 2026)</a> ·
       <a href="https://www.resultsense.com/news/2026-08-04-consultancy-clients-distrust-ai-reports/" target="_blank" rel="noopener">Source Global Research, survey of 3,887 companies (Aug 2026)</a> ·
       <a href="https://newsroom.ibm.com/2026-05-04-ibm-study-ceos-are-reshaping-c-suite-roles-for-the-ai-era" target="_blank" rel="noopener">IBM CEO Study, 2,000 CEOs (May 2026)</a>.
-      Statistics referenced in the Field Notes library carry their sources in place.
       We cite what we can verify — and nothing else.
     </div>
   </div>
@@ -814,7 +808,7 @@
         </div>
         <div class="m-grid">
           <label>Company<input name="company" required autocomplete="organization" placeholder="Company, Inc."></label>
-          <label>Your role<input name="role" placeholder="CFO · COO · Founder"></label>
+          <label>Your role <span style="opacity:.55;font-weight:400">(optional)</span><input name="role" autocomplete="organization-title" placeholder="CFO · COO · Founder"></label>
         </div>
         <label>Engagement of interest
           <select name="engagement">
@@ -827,7 +821,7 @@
         </label>
         <label>What are you trying to achieve?<textarea name="context" required placeholder="The problem, the systems involved, and what success looks like — two or three sentences is plenty."></textarea></label>
         <div class="m-grid">
-          <label>Preferred date<input name="date" type="date"></label>
+          <label>Preferred date <span style="opacity:.55;font-weight:400">(optional)</span><input name="date" type="date"></label>
           <label>Preferred call window
             <select name="window">
               <option>US morning (ET)</option>
@@ -930,7 +924,8 @@
   (function () {
     // ── Native booking & quote system: in-page form → direct email delivery ──
     var EMAIL = 'ahmad@alraintelligence.com';
-    var ENDPOINT = 'https://formsubmit.co/ajax/' + EMAIL;
+    var NOTIFY = 'ahmadqt96@outlook.com'; // owner notification inbox
+    var ENDPOINT = 'https://formsubmit.co/ajax/' + NOTIFY;
     var veil = document.getElementById('lead-veil');
     if (!veil) return;
     var form = document.getElementById('lead-form');
@@ -1025,7 +1020,8 @@
           preferred_date: (f.date && f.date.value) || 'flexible',
           preferred_window: f.window.value, timeline: f.timeline.value,
           timezone: tz, goal: f.context.value.trim(),
-          _subject: subject, _template: 'table', _captcha: 'false'
+          _subject: subject, _template: 'table', _captcha: 'false',
+          _autoresponse: 'Thank you — your request has reached Alra Intelligence.\n\nWhat happens next:\n1. Your brief is reviewed personally by our principal — not a queue, not a bot.\n2. You will receive a reply from ahmad@alraintelligence.com within one business day.\n3. If you requested a call, the reply includes a confirmed calendar invitation for your selected date and window.\n\nIf anything changes on your side, simply reply to this email.\n\nAlra Intelligence\nServices-as-Software for the AI Era\nhttps://alraintelligence.com'
         })
       }).then(function (r) { if (!r.ok) throw new Error('relay'); return r.json(); })
       .then(function () {
