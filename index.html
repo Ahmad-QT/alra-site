@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Alra Intelligence — a services-as-software firm. Senior engineers ship production AI in weeks at fixed written quotes, run it as managed systems, and report the return in CFO language.">
 <meta property="og:title" content="Alra Intelligence — Services-as-Software for the AI Era">
+<meta property="og:description" content="We sell finished work. Not hours. Fixed quotes, production in weeks, fractional Chief AI Officer.">
 <meta property="og:type" content="website">
 <link rel="canonical" href="https://alraintelligence.com/">
 <meta property="og:url" content="https://alraintelligence.com/">
@@ -802,6 +803,9 @@
       <h3 id="m-title">Tell us where to reach you</h3>
       <p class="m-sub" id="m-sub">30 minutes, video, anywhere on earth. One business-day response.</p>
       <form id="lead-form" novalidate>
+        <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden">
+          <label>Do not fill this in<input name="website" type="text" tabindex="-1" autocomplete="off"></label>
+        </div>
         <div class="m-grid">
           <label>Full name<input name="name" required autocomplete="name" placeholder="Jane Smith"></label>
           <label>Work email<input name="email" type="email" required autocomplete="email" placeholder="jane@company.com"></label>
@@ -1014,6 +1018,7 @@
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify({
+          website: (f.website && f.website.value) || '',
           name: f.name.value.trim(), email: f.email.value.trim(),
           company: f.company.value.trim(), role: f.role.value.trim() || '-',
           engagement: f.engagement.value,
