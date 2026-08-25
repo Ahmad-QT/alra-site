@@ -928,8 +928,7 @@
   (function () {
     // ── Native booking & quote system: in-page form → direct email delivery ──
     var EMAIL = 'ahmad@alraintelligence.com';
-    var NOTIFY = 'ahmadqt96@outlook.com'; // owner notification inbox
-    var ENDPOINT = 'https://formsubmit.co/ajax/' + NOTIFY;
+    var ENDPOINT = 'https://alra-api.vercel.app/api/request';
     var veil = document.getElementById('lead-veil');
     if (!veil) return;
     var form = document.getElementById('lead-form');
@@ -1025,8 +1024,7 @@
           preferred_date: (f.date && f.date.value) || 'flexible',
           preferred_window: f.window.value, timeline: f.timeline.value,
           timezone: tz, goal: f.context.value.trim(),
-          _subject: subject, _template: 'table', _captcha: 'false',
-          _autoresponse: 'Thank you — your request has reached Alra Intelligence.\n\nWhat happens next:\n1. Your brief is reviewed personally by our principal — not a queue, not a bot.\n2. You will receive a reply from ahmad@alraintelligence.com within one business day.\n3. If you requested a call, the reply includes a confirmed calendar invitation for your selected date and window.\n\nIf anything changes on your side, simply reply to this email.\n\nAlra Intelligence\nServices-as-Software for the AI Era\nhttps://alraintelligence.com'
+          kind: (kind.toLowerCase().indexOf('quote') !== -1 ? 'quote' : 'call'), subject: subject
         })
       }).then(function (r) { if (!r.ok) throw new Error('relay'); return r.json(); })
       .then(function () {
